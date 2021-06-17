@@ -8,6 +8,7 @@ Created on Wed Jun 16 17:54:59 2021
 from flask import Flask,request,make_response
 from flask_cors import cross_origin
 import json
+import os
 from pymongo import MongoClient
 
 
@@ -113,9 +114,10 @@ def DatabaseConnection():
     collection=db.get_collection('Customer_Details')
     return collection
 
+
 if __name__ == '__main__':
-    app.run(port=5000,debug=True)
-    
+    port = int(os.getenv('PORT'))
+    app.run(debug=False, port=port, host='0.0.0.0')
         
 
 
