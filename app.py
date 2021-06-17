@@ -35,6 +35,10 @@ def ProcessFiles(files):
     parameters=result.get("parameters")
     PolicyNumber=parameters.get("PolicyNumber")
     query=database.find({'PolicyNumber':PolicyNumber})
+    for record in query:
+        Location=record['Location']
+        RepName=record['RepresentativeName']
+        RepNum=record['RepresentativeContactNumber']
     if intent == 'PolicyNumberGathering':
         webhook_message="The policy number you mentioned is"+PolicyNumber+"Is that correct ?"
         
@@ -52,8 +56,6 @@ def ProcessFiles(files):
             ]
         }
     if intent == 'PolicyNumberConfirmation - yes':
-        for i in query:
-            Location=i['Location']
         webhook_message="Is this about the property in this location :"+Location
         
         return {
@@ -70,9 +72,6 @@ def ProcessFiles(files):
             ]
         }
     if intent == 'DescriptionAboutDamage':
-        for j in query:
-            RepName=j['RepresentativeName']
-            RepNum=j['RepresentativeContactNumber']
         webhook_message="Okay we got the reason for your claim , your claim representative name is :"+RepName+" and contact them at this number:"+RepNum+", do you want me to repeat it one more time"    
  
         return {
@@ -89,9 +88,6 @@ def ProcessFiles(files):
             ]
         }
     if intent == 'DescriptionAboutDamage - yes':
-        for j in query:
-            RepName=j['RepresentativeName']
-            RepNum=j['RepresentativeContactNumber']
         webhook_message="your claim representative name is :"+RepName+" and contact them at this number:"+RepNum
         
         return {
@@ -114,11 +110,15 @@ def DatabaseConnection():
     collection=db.get_collection('Customer_Details')
     return collection
 
+"""
+if __name__ == '__main__':
+    app.run(port=5000,debug=True)
 
+"""
 if __name__ == '__main__':
     port = int(os.getenv('PORT'))
-    app.run(debug=False, port=port, host='0.0.0.0')
-        
+    print("Starting app on port %d" % port)
+    app.run(debug=False, port=port, host='0.0.0.0')      
 
 
 
