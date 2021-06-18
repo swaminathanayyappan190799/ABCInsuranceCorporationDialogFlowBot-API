@@ -10,13 +10,13 @@ from flask import Flask,request
 sample=Flask(__name__)
 
 @sample.route('/webhook',methods=['POST'])
-def home():
+def webhook():
     files=request.get_json(silent=True,force=True)
-    #fulfillment_text=''
     query_result=files.get("queryResult")
-    intent=query_result.get("intent").get("displayName")
-    if intent == 'PolicyIDCollection':
-        policynumber=query_result.get("parameters").get("policynumber")
+    #intent=query_result.get("intent").get("displayName")
+    if query_result.get('action')=='WelcomeIntent.WelcomeIntent-yes.ReportingPropertyClaim-custom':
+        policynumber=str(query_result.get("parameters").get("policynumber"))
+        print(policynumber)
     return {
 
             "fulfillmentMessages": [
@@ -38,10 +38,12 @@ def home():
                 }
             ]
         }
-""""
+
+"""
 if __name__=="__main__":
     sample.run(debug=True)
         
 """
 if __name__=="__main__":
     sample.run(host='0.0.0.0',port=8080)
+
