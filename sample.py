@@ -6,6 +6,7 @@ Created on Fri Jun 18 10:46:18 2021
 """
 
 from flask import Flask,request
+import os
 
 sample=Flask(__name__)
 
@@ -14,7 +15,7 @@ def webhook():
     files=request.get_json(silent=True,force=True)
     query_result=files.get("queryResult")
     #intent=query_result.get("intent").get("displayName")
-    if query_result.get('action')=='WelcomeIntent.WelcomeIntent-yes.ReportingPropertyClaim-custom':
+    if query_result.get('action')=='WelcomeIntent.WelcomeIntent-yes':
         policynumber=str(query_result.get("parameters").get("policynumber"))
         print(policynumber)
     return {
@@ -38,12 +39,12 @@ def webhook():
                 }
             ]
         }
-
 """
 if __name__=="__main__":
     sample.run(debug=True)
         
 """
-if __name__=="__main__":
-    sample.run(host='0.0.0.0',port=8080)
+if __name__ == '__main__':
+    port = int(os.getenv('PORT'))
+    app.run(debug=False, port=port, host='0.0.0.0')
 
