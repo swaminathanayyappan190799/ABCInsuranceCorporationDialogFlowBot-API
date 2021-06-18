@@ -6,6 +6,7 @@ Created on Fri Jun 18 10:46:18 2021
 """
 
 from flask import Flask,request
+import os
 
 sample=Flask(__name__)
 
@@ -26,6 +27,6 @@ if __name__=="__main__":
     sample.run(debug=True)
         
 """
-if __name__=="__main__":
-    sample.run(host='0.0.0.0',port=8080)
-
+if __name__ == '__main__':
+    port = int(os.getenv('PORT'))
+    app.run(debug=False, port=port, host='0.0.0.0')
